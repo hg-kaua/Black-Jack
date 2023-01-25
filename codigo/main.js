@@ -1,65 +1,78 @@
 
-//  2:24:01 video freecode
-
-// criar variavel para armazenar a classe hands e para gerar numeros aleatorios
 const myHands = document.querySelector('.hands');
 let card = Math.floor(Math.random() * 11+1);
 let secondCard = Math.floor(Math.random() * 11+1);
 
-// criar a soma variavel que armazena a soma das cartas
+
 const sumCards = document.querySelector('.sum')
-let sum = card + secondCard;
+let sum;
 
-// variavel para verificar se botao START GAME foi iniciado
-let clickStart = true;
+let clickStart = false;
 
-// variavel que armazena o botao de START GAME
 const startBtn = document.querySelector('.startGame');
-const question = document.querySelector('h3');
+const message = document.querySelector('h3');
 
-// adicionar o evendo click ao botao START GAME
+
 startBtn.addEventListener('click', () => {
-        if(clickStart) {
-            question.textContent = 'Do you want to draw a new card?'
+    sum = card + secondCard
+        if(clickStart === false) {
+            message.textContent = 'Do you want to draw a new card?'
             myHands.textContent += ' ' + card + ' + ' + secondCard;
             
             if(sum === 21){
-                var word = document.querySelector(".congratsWord");
-                word.textContent = 'You winn !!'
+                message.textContent = 'You winn !!'
                 newCardBtn.setAttribute('disabled','');
+
+                resetGame();
              }
             sumCards.textContent += ' ' + sum 
-            clickStart = false;
+            clickStart = true;
         } else {
-            alert('press "NEW CARD"');
+            startBtn.setAttribute('disabled','');
         }
 });
 
-// variavel que armazena o botao de NEW CARD
+
 const newCardBtn = document.querySelector('.newCard');
 
-// adicionar o evendo click ao botao NEW CARD
+
 newCardBtn.addEventListener('click', () => {
-    if(clickStart === false) {
+    if(clickStart === true) {
         card = Math.floor(Math.random() * 11+1);
         sum += card;
         sumCards.textContent = 'Sum: ' + sum;
         myHands.textContent += ' + ' + card;
         if(sum <= 21) {
             if(sum === 21){
-                var word = document.querySelector(".congratsWord");
-                word.textContent = 'you winn !!';
+                message.textContent = 'you winn !!';
 
-                // desabilita o botao caso o jogo acabe
                 newCardBtn.setAttribute('disabled','');
+                resetGame();
              }
         } else {
-            var word = document.querySelector(".lostsWord");
-            word.textContent = 'Oh sorry, good luck next time!';
-            
-            // desabilita o botao caso o jogo acabe
+            message.textContent = 'Oh sorry, good luck next time!';
+
             newCardBtn.setAttribute('disabled','');
+            resetGame();
         } 
     }
 })
+
+// create a button for game reset
+function resetGame() {
+    const resetBtn = document.createElement('button');
+    resetBtn.textContent = 'PLAY AGAIN';
+    document.querySelector('.container').appendChild(resetBtn);
+
+    resetBtn.addEventListener('click', () => {
+        message.textContent = 'Want to play a round?';
+        myHands.textContent = 'Your hands: ';
+        sumCards.textContent = 'Sum: ';
+        sum = 0;
+        clickStart = false;
+        startBtn.removeAttribute('disabled','');
+        newCardBtn.removeAttribute('disabled', '');
+        resetBtn.remove();
+    });
+}
 

@@ -32,11 +32,3 @@ button:hover {
     opacity: 0.9;
     border: 1px solid white;
 }
-.congratsWord {
-    font-size: 2rem;
-    color: #FFFAFA;
-}
-.lostsWord {
-    font-size: 2rem;
-    color: #B22222;
-}
